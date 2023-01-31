@@ -1,0 +1,7 @@
+{
+  "defaultEnv": { "ENV": "ENV" },
+  "dev": {
+    "driver": "pg",
+    "url": { "ENV": "DB_URL" }
+  }
+}
