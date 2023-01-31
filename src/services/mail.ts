@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-const transportOptions: nodemailer.TransportOptions = {
+const transportOptions = {
   service: "hotmail",
   auth: {
     user: process.env.EMAIL_USER as unknown as string,

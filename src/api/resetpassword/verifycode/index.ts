@@ -8,7 +8,7 @@ const verifyCode = async (req: Request, res: Response) => {
   const { resetCode, username, newPassword } = req.body;
 
   try {
-    console.log(resetNum, resetCode);
+    // console.log(resetNum, resetCode);
 
     if (resetCode === resetNum) {
       const user: User = await u.updatePass(username, newPassword);
