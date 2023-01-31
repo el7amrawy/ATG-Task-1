@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import usersRoutes from "../handlers/users";
-import resetPasswordRoute from "./reset-Password";
+import resetPasswordRoute from "./resetpassword";
 
 const routes: Router = Router();
 

@@ -19,8 +19,7 @@ function sendEmail(reciever: string, subject: string, message: string) {
   };
   transporter.sendMail(options, (err, info) => {
     if (err) {
-      console.log(err);
-      return;
+      throw new Error(`${err}`);
     }
   });
 }
