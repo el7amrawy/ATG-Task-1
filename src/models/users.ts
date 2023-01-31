@@ -16,7 +16,7 @@ class Users {
     name: User["name"]
   ): Promise<User> {
     const query =
-      "INSERT INTO ATGusers (email,password,username,name) VALUES ($1,$2,$3) RETURNING *";
+      "INSERT INTO ATGusers (email,password,username,name) VALUES ($1,$2,$3,$4) RETURNING *";
 
     try {
       const conn = await client.connect();
@@ -27,7 +27,7 @@ class Users {
 
       return user;
     } catch (err) {
-      throw new Error("couldn't create new user");
+      throw new Error(`couldn't create new user ${err}`);
     }
   }
 

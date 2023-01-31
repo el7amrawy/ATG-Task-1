@@ -20,7 +20,9 @@ const authenticate = async (req: Request, res: Response) => {
     const user = await u.authenticate(username, password);
     if (user) {
       res.json(user);
+      return;
     }
+    throw new Error("");
   } catch (err) {
     res.status(400).json("wrong username or password");
   }
@@ -28,7 +30,7 @@ const authenticate = async (req: Request, res: Response) => {
 
 const usersRoutes = Router();
 
-usersRoutes.post("registrate", create);
-usersRoutes.post("login", authenticate);
+usersRoutes.post("/registrate", create);
+usersRoutes.post("/login", authenticate);
 
 export default usersRoutes;
