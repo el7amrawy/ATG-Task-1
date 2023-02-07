@@ -10,7 +10,7 @@
     "dev": "nodemon src/server.ts",
     "build": "tsc",
     "migrations-up": "db-migrate up",
-    "migrations-down": "db-migrate down",
+    "migrations-down": "db-migrate down *",
     "db": "docker-compose up -d",
     "psql": "docker exec -it ATG_db_co psql dev_db -U postgres"
   },

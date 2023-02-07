@@ -1,7 +1,5 @@
 /* Replace with your SQL commands */
-/* Replace with your SQL commands */
-/* Replace with your SQL commands */
-CREATE TABLE ATGusers
+CREATE TABLE atgusers
 (
     id SERIAL PRIMARY KEY, -- primary key column
     username VARCHAR(50) NOT NULL,
