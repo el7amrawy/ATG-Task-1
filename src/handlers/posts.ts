@@ -1,5 +1,6 @@
 import { Post, Posts } from "../models/posts";
 import { Request, Response, Router } from "express";
+import commentsRoutes from "./comments";
 
 const p = new Posts();
 
@@ -61,5 +62,7 @@ postsRoutes.post("/", create);
 postsRoutes.get("/:post_id", show);
 postsRoutes.post("/:post_id", update);
 postsRoutes.delete("/:post_id", remove);
+
+postsRoutes.use("/:post_id/comments", commentsRoutes);
 
 export default postsRoutes;

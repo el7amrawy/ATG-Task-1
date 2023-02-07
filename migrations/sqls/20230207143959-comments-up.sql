@@ -2,6 +2,6 @@
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
     content TEXT NOT NULL,
-    post_id BIGINT REFERENCES posts(id),
-    creator_id BIGINT REFERENCES atgusers(id)
+    post_id BIGINT REFERENCES posts(id) NOT NULL,
+    creator_id BIGINT REFERENCES atgusers(id) NOT NULL
 );
