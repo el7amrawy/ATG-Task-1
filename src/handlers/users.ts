@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import { User, Users } from "../models/users";
+import postsRoutes from "./posts";
 
 const u = new Users();
 
@@ -32,5 +33,7 @@ const usersRoutes = Router();
 
 usersRoutes.post("/registrate", create);
 usersRoutes.post("/login", authenticate);
+
+usersRoutes.use("/:user_id/posts", postsRoutes);
 
 export default usersRoutes;
