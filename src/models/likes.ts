@@ -23,12 +23,15 @@ class Likes {
     }
   }
 
-  async show(id: Like["id"]): Promise<Like> {
-    const sql = "SELECT * FROM likes WHERE id=$1";
+  async show(
+    creator_id: Like["creator_id"],
+    post_id: Like["post_id"]
+  ): Promise<Like> {
+    const sql = "SELECT * FROM likes WHERE creator_id=$1 AND post_id=$2";
 
     try {
       const conn = await client.connect();
-      const res = await conn.query(sql, [id]);
+      const res = await conn.query(sql, [creator_id, post_id]);
 
       const like: Like = res.rows[0];
       conn.release();

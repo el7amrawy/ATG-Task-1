@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import { Like, Likes } from "../models/likes";
+import checkLikes from "../middlewares/checkLikes";
 
 const l = new Likes();
 
@@ -34,7 +35,7 @@ const remove = async (req: Request, res: Response) => {
 
     const like: Like = await l.remove(creator_id);
 
-    res.json(like);
+    res.json({ status: "post unliked successfully", like });
   } catch (err) {
     res.status(400).json(`couldn't unlike post ${err}`);
   }
@@ -43,7 +44,7 @@ const remove = async (req: Request, res: Response) => {
 const likesRoutes = Router({ mergeParams: true });
 
 likesRoutes.get("/", index);
-likesRoutes.post("/", create);
+likesRoutes.post("/", checkLikes, create);
 likesRoutes.delete("/", remove);
 
 export default likesRoutes;
