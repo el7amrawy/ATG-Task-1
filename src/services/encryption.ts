@@ -1,4 +1,7 @@
 import crypto from "crypto";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 class Encryption {
   private static algorithm = process.env.CRYPTO_ALGORITHM as unknown as string;
@@ -44,6 +47,24 @@ class Encryption {
     } catch (err) {
       throw new Error(`${err}`);
     }
+  }
+
+  decryptObject(ob: Object): Object {
+    let enOb = {};
+    for (const x in ob) {
+      if (x !== "id" && x !== "password" && x !== "username") {
+        enOb = {
+          ...enOb,
+          [x]: this.decrypt(ob[x as keyof typeof ob] as unknown as string),
+        };
+      } else {
+        enOb = {
+          ...enOb,
+          [x]: ob[x as keyof typeof ob],
+        };
+      }
+    }
+    return enOb;
   }
 }
 
