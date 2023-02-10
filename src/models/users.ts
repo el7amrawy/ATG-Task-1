@@ -1,5 +1,6 @@
 import client from "../database";
 import bcrypt from "bcrypt";
+import encryption from "../services/encryption";
 
 const { SALT, ROUNDS } = process.env;
 
@@ -28,12 +29,18 @@ class Users {
 
     try {
       const conn = await client.connect();
-      const res = await conn.query(sql, [email, hashedPass, username, name]);
+      const res = await conn.query(sql, [
+        encryption.encrypt(email),
+        hashedPass,
+        username,
+        encryption.encrypt(name),
+      ]);
       const user: User = res.rows[0];
 
       conn.release();
 
-      return user;
+      delete user.password;
+      return encryption.decryptObject(user) as unknown as User;
     } catch (err) {
       throw new Error(`couldn't create new user ${err}`);
     }
@@ -59,7 +66,7 @@ class Users {
         )
       ) {
         delete user.password;
-        return user;
+        return encryption.decryptObject(user) as unknown as User;
       }
       return null;
     } catch (err) {
@@ -77,7 +84,7 @@ class Users {
 
       conn.release();
 
-      return user.email;
+      return encryption.decrypt(user.email);
     } catch (err) {
       throw new Error(`${err}`);
     }
@@ -99,8 +106,8 @@ class Users {
 
       conn.release();
 
-      //   delete user.password;
-      return user;
+      delete user.password;
+      return encryption.decryptObject(user) as unknown as User;
     } catch (err) {
       throw new Error(`${err}`);
     }
