@@ -2,6 +2,7 @@ import { Post, Posts } from "../models/posts";
 import { Request, Response, Router } from "express";
 import commentsRoutes from "./comments";
 import likesRoutes from "./likes";
+import verifyTokenOwner from "../middlewares/verifyTokenOwner";
 
 const p = new Posts();
 
@@ -59,10 +60,10 @@ const remove = async (req: Request, res: Response) => {
 
 const postsRoutes = Router({ mergeParams: true });
 
-postsRoutes.post("/", create);
+postsRoutes.post("/", verifyTokenOwner, create);
 postsRoutes.get("/:post_id", show);
-postsRoutes.post("/:post_id", update);
-postsRoutes.delete("/:post_id", remove);
+postsRoutes.post("/:post_id", verifyTokenOwner, update);
+postsRoutes.delete("/:post_id", verifyTokenOwner, remove);
 
 postsRoutes.use("/:post_id/comments", commentsRoutes);
 postsRoutes.use("/:post_id/likes", likesRoutes);
