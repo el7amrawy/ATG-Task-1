@@ -52,7 +52,13 @@ class Encryption {
   decryptObject(ob: Object): Object {
     let enOb = {};
     for (const x in ob) {
-      if (x !== "id" && x !== "password" && x !== "username") {
+      if (
+        x !== "id" &&
+        x !== "password" &&
+        x !== "username" &&
+        x !== "creator_id" &&
+        x !== "post_id"
+      ) {
         enOb = {
           ...enOb,
           [x]: this.decrypt(ob[x as keyof typeof ob] as unknown as string),

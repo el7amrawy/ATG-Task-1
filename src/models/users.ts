@@ -46,6 +46,20 @@ class Users {
     }
   }
 
+  async show(username: User["username"]): Promise<User> {
+    const sql = "SELECT * FROM atgusers WHERE username=$1";
+
+    try {
+      const conn = await client.connect();
+      const res = await conn.query(sql, [username]);
+      const user: User = res.rows[0];
+
+      return encryption.decryptObject(user) as unknown as User;
+    } catch (err) {
+      throw new Error(`couldn't show user ${err}`);
+    }
+  }
+
   async authenticate(
     username: User["username"],
     password: User["password"]

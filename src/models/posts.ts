@@ -1,5 +1,6 @@
 import client from "../database";
 import { User } from "./users";
+import encryption from "../services/encryption";
 
 type Post = {
   id: string;
@@ -17,7 +18,9 @@ class Posts {
       const posts: Post[] = res.rows;
       conn.release();
 
-      return posts;
+      return posts.map((post) =>
+        encryption.decryptObject(post)
+      ) as unknown as Post[];
     } catch (err) {
       throw new Error(`${err}`);
     }
@@ -33,7 +36,7 @@ class Posts {
       const post: Post = res.rows[0];
       conn.release();
 
-      return post;
+      return encryption.decryptObject(post) as unknown as Post;
     } catch (err) {
       throw new Error(`${err}`);
     }
@@ -48,12 +51,15 @@ class Posts {
 
     try {
       const conn = await client.connect();
-      const res = await conn.query(sql, [content, creator_id]);
+      const res = await conn.query(sql, [
+        encryption.encrypt(content),
+        creator_id,
+      ]);
 
       const post: Post = res.rows[0];
       conn.release();
 
-      return post;
+      return encryption.decryptObject(post) as unknown as Post;
     } catch (err) {
       throw new Error(`${err}`);
     }
@@ -64,12 +70,12 @@ class Posts {
 
     try {
       const conn = await client.connect();
-      const res = await conn.query(sql, [content, id]);
+      const res = await conn.query(sql, [encryption.encrypt(content), id]);
 
       const post: Post = res.rows[0];
       conn.release();
 
-      return post;
+      return encryption.decryptObject(post) as unknown as Post;
     } catch (err) {
       throw new Error(`${err}`);
     }
@@ -85,7 +91,7 @@ class Posts {
       const post: Post = res.rows[0];
       conn.release();
 
-      return post;
+      return encryption.decryptObject(post) as unknown as Post;
     } catch (err) {
       throw new Error(`${err}`);
     }

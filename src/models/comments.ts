@@ -1,4 +1,5 @@
 import client from "../database";
+import encryption from "../services/encryption";
 
 type Comment = {
   id: string;
@@ -17,7 +18,9 @@ class Comments {
       const comments: Comment[] = res.rows;
       conn.release();
 
-      return comments;
+      return comments.map((comment) =>
+        encryption.decryptObject(comment)
+      ) as unknown as Comment[];
     } catch (err) {
       throw new Error(`${err}`);
     }
@@ -33,12 +36,16 @@ class Comments {
 
     try {
       const conn = await client.connect();
-      const res = await conn.query(sql, [content, post_id, creator_id]);
+      const res = await conn.query(sql, [
+        encryption.encrypt(content),
+        post_id,
+        creator_id,
+      ]);
 
       const comment: Comment = res.rows[0];
       conn.release();
 
-      return comment;
+      return encryption.decryptObject(comment) as unknown as Comment;
     } catch (err) {
       throw new Error(`${err}`);
     }
@@ -52,12 +59,12 @@ class Comments {
 
     try {
       const conn = await client.connect();
-      const res = await conn.query(sql, [content, id]);
+      const res = await conn.query(sql, [encryption.encrypt(content), id]);
 
       const comment: Comment = res.rows[0];
       conn.release();
 
-      return comment;
+      return encryption.decryptObject(comment) as unknown as Comment;
     } catch (err) {
       throw new Error(`${err}`);
     }
@@ -72,7 +79,7 @@ class Comments {
       const comment: Comment = res.rows[0];
       conn.release();
 
-      return comment;
+      return encryption.decryptObject(comment) as unknown as Comment;
     } catch (err) {
       throw new Error(`${err}`);
     }

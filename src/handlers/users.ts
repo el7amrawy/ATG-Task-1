@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import { User, Users } from "../models/users";
 import postsRoutes from "./posts";
 import { verifyAuthToken, createAuthToken } from "../services/authorization";
+import checkUsername from "../middlewares/checkUsername";
 
 const u = new Users();
 
@@ -32,7 +33,7 @@ const authenticate = async (req: Request, res: Response) => {
 
 const usersRoutes = Router();
 
-usersRoutes.post("/registrate", create);
+usersRoutes.post("/registrate", checkUsername, create);
 usersRoutes.post("/login", authenticate);
 
 usersRoutes.use(verifyAuthToken);
