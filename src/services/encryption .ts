@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-class Crypt {
+class Encryption {
   private algorithm = process.env.CRYPTO_ALGORITHM as unknown as string;
   private key = Buffer.from(process.env.CRYPTO_KEY as unknown as string, "hex");
   private iv = Buffer.from(process.env.CRYPTO_IV as unknown as string, "hex");
@@ -37,4 +37,4 @@ class Crypt {
   }
 }
 
-export default new Crypt();
+export default new Encryption();
