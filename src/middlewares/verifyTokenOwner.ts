@@ -1,8 +1,6 @@
-import { User, Users } from "../models/users";
+import { User } from "../models/users";
 import { Request, Response } from "express";
 import Jwt from "jsonwebtoken";
-
-const u = new Users();
 
 const verifyTokenOwner = (req: Request, res: Response, next: Function) => {
   try {
