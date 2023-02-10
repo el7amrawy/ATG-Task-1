@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import { User, Users } from "../models/users";
 import postsRoutes from "./posts";
+import { verifyAuthToken, createAuthToken } from "../services/authorization";
 
 const u = new Users();
 
@@ -9,7 +10,7 @@ const create = async (req: Request, res: Response) => {
 
   try {
     const user: User = await u.create(email, password, username, name);
-    res.json(user);
+    res.json({ user, authToken: createAuthToken(user) });
   } catch (err) {
     res.status(500).json(`${err}`);
   }
@@ -20,7 +21,7 @@ const authenticate = async (req: Request, res: Response) => {
   try {
     const user = await u.authenticate(username, password);
     if (user) {
-      res.json(user);
+      res.json({ user, authToken: createAuthToken(user) });
       return;
     }
     throw new Error("");
@@ -34,6 +35,7 @@ const usersRoutes = Router();
 usersRoutes.post("/registrate", create);
 usersRoutes.post("/login", authenticate);
 
+usersRoutes.use(verifyAuthToken);
 usersRoutes.use("/:user_id/posts", postsRoutes);
 
 export default usersRoutes;
