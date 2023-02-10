@@ -1,13 +1,26 @@
 import crypto from "crypto";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 class Encryption {
-  private algorithm = process.env.CRYPTO_ALGORITHM as unknown as string;
-  private key = Buffer.from(process.env.CRYPTO_KEY as unknown as string, "hex");
-  private iv = Buffer.from(process.env.CRYPTO_IV as unknown as string, "hex");
+  private static algorithm = process.env.CRYPTO_ALGORITHM as unknown as string;
+  private static key = Buffer.from(
+    process.env.CRYPTO_KEY as unknown as string,
+    "hex"
+  );
+  private static iv = Buffer.from(
+    process.env.CRYPTO_IV as unknown as string,
+    "hex"
+  );
 
   encrypt(text: string): string {
     try {
-      const cipher = crypto.createCipheriv(this.algorithm, this.key, this.iv);
+      const cipher = crypto.createCipheriv(
+        Encryption.algorithm,
+        Encryption.key,
+        Encryption.iv
+      );
       let encrypted = cipher.update(text);
       encrypted = Buffer.concat([encrypted, cipher.final()]);
 
@@ -22,9 +35,9 @@ class Encryption {
       const encryptedText = Buffer.from(encreptedText, "hex");
 
       const decipher = crypto.createDecipheriv(
-        this.algorithm,
-        this.key,
-        this.iv
+        Encryption.algorithm,
+        Encryption.key,
+        Encryption.iv
       );
 
       let decrypted = decipher.update(encryptedText);
@@ -38,3 +51,6 @@ class Encryption {
 }
 
 export default new Encryption();
+const c = new Encryption();
+const e = c.encrypt("hi");
+console.log(c.decrypt(e));
