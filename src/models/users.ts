@@ -1,4 +1,7 @@
 import client from "../database";
+import bcrypt from "bcrypt";
+
+const { SALT, ROUNDS } = process.env;
 
 interface User {
   id: string;
@@ -15,12 +18,17 @@ class Users {
     username: User["username"],
     name: User["name"]
   ): Promise<User> {
+    const hashedPass = bcrypt.hashSync(
+      (password as unknown as string) + SALT,
+      parseInt(ROUNDS as unknown as string)
+    );
+
     const sql =
       "INSERT INTO ATGusers (email,password,username,name) VALUES ($1,$2,$3,$4) RETURNING *";
 
     try {
       const conn = await client.connect();
-      const res = await conn.query(sql, [email, password, username, name]);
+      const res = await conn.query(sql, [email, hashedPass, username, name]);
       const user: User = res.rows[0];
 
       conn.release();
@@ -44,7 +52,12 @@ class Users {
 
       conn.release();
 
-      if (user.password === password) {
+      if (
+        bcrypt.compareSync(
+          (password as unknown as string) + SALT,
+          user.password as unknown as string
+        )
+      ) {
         delete user.password;
         return user;
       }
@@ -72,10 +85,16 @@ class Users {
 
   async updatePass(username: string, password: string): Promise<User> {
     const sql = "UPDATE ATGusers SET password=$1 WHERE username=$2 RETURNING *";
+
+    const hashedPass = bcrypt.hashSync(
+      (password as unknown as string) + SALT,
+      parseInt(ROUNDS as unknown as string)
+    );
+
     try {
       const conn = await client.connect();
 
-      const res = await conn.query(sql, [password, username]);
+      const res = await conn.query(sql, [hashedPass, username]);
       const user: User = res.rows[0];
 
       conn.release();
