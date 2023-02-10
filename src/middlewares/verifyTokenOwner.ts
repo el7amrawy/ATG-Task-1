@@ -13,9 +13,9 @@ const verifyTokenOwner = (req: Request, res: Response, next: Function) => {
       next();
       return;
     }
-    throw new Error("");
+    throw new Error("unacceptable token");
   } catch (err) {
-    res.status(406).json("wrong token");
+    res.status(406).json(`${err}`);
   }
 };
 
