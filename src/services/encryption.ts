@@ -1,7 +1,4 @@
 import crypto from "crypto";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 class Encryption {
   private static algorithm = process.env.CRYPTO_ALGORITHM as unknown as string;
@@ -51,6 +48,3 @@ class Encryption {
 }
 
 export default new Encryption();
-const c = new Encryption();
-const e = c.encrypt("hi");
-console.log(c.decrypt(e));
