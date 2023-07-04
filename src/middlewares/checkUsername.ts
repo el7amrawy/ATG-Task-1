@@ -11,9 +11,9 @@ const checkUsername = async (req: Request, res: Response, next: Function) => {
     if (!user?.name?.length) {
       return next();
     }
-    throw new Error("username already used");
+    throw new Error("");
   } catch (err) {
-    res.status(403).json(err);
+    res.status(403).json("username already used");
   }
 };
 
