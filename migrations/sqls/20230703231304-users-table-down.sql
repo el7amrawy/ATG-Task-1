@@ -1,2 +1,2 @@
 /* Replace with your SQL commands */
-DROP TABLE atgusers;
+DROP TABLE users;

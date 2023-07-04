@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres
-    container_name: ATG_db_co
+    container_name: node_task_co
     ports:
       - "5432:5432"
     env_file:

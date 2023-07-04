@@ -1,5 +1,5 @@
 {
-  "name": "atg-task-1",
+  "name": "node-task",
   "version": "1.0.0",
   "description": "",
   "engines": {
@@ -12,19 +12,11 @@
     "migrations-up": "db-migrate up",
     "migrations-down": "db-migrate down *",
     "db": "docker-compose up -d",
-    "psql": "docker exec -it ATG_db_co psql dev_db -U postgres"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/el7amrawy/ATG-Task-1.git"
+    "psql": "docker exec -it node_task_co psql dev_db -U postgres"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/el7amrawy/ATG-Task-1/issues"
-  },
-  "homepage": "https://github.com/el7amrawy/ATG-Task-1#readme",
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.16",
