@@ -25,7 +25,7 @@ class Users {
     );
 
     const sql =
-      "INSERT INTO ATGusers (email,password,username,name) VALUES ($1,$2,$3,$4) RETURNING *";
+      "INSERT INTO users (email,password,username,name) VALUES ($1,$2,$3,$4) RETURNING *";
 
     try {
       const conn = await client.connect();
@@ -47,7 +47,7 @@ class Users {
   }
 
   async show(username: User["username"]): Promise<User> {
-    const sql = "SELECT * FROM atgusers WHERE username=$1";
+    const sql = "SELECT * FROM users WHERE username=$1";
 
     try {
       const conn = await client.connect();
@@ -64,7 +64,7 @@ class Users {
     username: User["username"],
     password: User["password"]
   ): Promise<User | null> {
-    const sql = "SELECT * FROM ATGusers WHERE username=$1";
+    const sql = "SELECT * FROM users WHERE username=$1";
 
     try {
       const conn = await client.connect();
@@ -89,7 +89,7 @@ class Users {
   }
 
   async getEmail(username: string): Promise<string> {
-    const sql = "SELECT * FROM ATGusers WHERE username=$1";
+    const sql = "SELECT * FROM users WHERE username=$1";
 
     try {
       const conn = await client.connect();
@@ -105,7 +105,7 @@ class Users {
   }
 
   async updatePass(username: string, password: string): Promise<User> {
-    const sql = "UPDATE ATGusers SET password=$1 WHERE username=$2 RETURNING *";
+    const sql = "UPDATE users SET password=$1 WHERE username=$2 RETURNING *";
 
     const hashedPass = bcrypt.hashSync(
       (password as unknown as string) + SALT,
