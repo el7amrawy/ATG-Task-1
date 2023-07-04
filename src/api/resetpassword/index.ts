@@ -4,7 +4,7 @@ import sendEmail from "../../services/mail";
 import verifyCodeRoute from "./verifycode";
 
 const u = new Users();
-let resetNum = genResetNum();
+let resetNum: string;
 
 const resetPassword = async (req: Request, res: Response) => {
   const baseUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
@@ -12,7 +12,11 @@ const resetPassword = async (req: Request, res: Response) => {
   try {
     const email = await u.getEmail(username);
     if (email.length) {
-      sendEmail(email, "Reset Password", `reset code is ${resetNum}`);
+      sendEmail(
+        email,
+        "Reset Password",
+        `reset code is ${(resetNum = genResetNum())}`
+      );
       res.json({
         status: `reset email sent to ${email}`,
         url: baseUrl + "/verifyCode",
